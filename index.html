@@ -227,6 +227,22 @@
   .metric .mv { font-size: 15px; font-weight: 700; margin-top: 3px; font-variant-numeric: tabular-nums; }
   .lab-note { font-size: 11.5px; line-height: 1.7; color: var(--text3); background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 13px 14px; }
   .lab-note b { color: var(--text2); }
+  /* ── AI 解读 ── */
+  .ai-badge { font-size: 10px; font-weight: 700; color: #8b5cf6; background: rgba(139,92,246,.12); border: 1px solid rgba(139,92,246,.3); padding: 3px 8px; border-radius: 20px; letter-spacing: 0; text-transform: none; }
+  .ai-q { width: 100%; min-height: 52px; resize: vertical; font-family: inherit; font-size: 12px; line-height: 1.6; color: var(--text); background: var(--bg3); border: 1px solid var(--border); border-radius: 9px; padding: 9px 10px; outline: none; transition: .15s; box-sizing: border-box; }
+  .ai-q:focus { border-color: var(--accent); }
+  .ai-q::placeholder { color: var(--text3); }
+  .ai-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 9px 0; }
+  .ai-chip { font-family: inherit; font-size: 11px; font-weight: 600; padding: 4px 9px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg3); color: var(--text3); cursor: pointer; transition: .15s; }
+  .ai-chip:hover { color: var(--text); border-color: var(--accent); }
+  .ai-go { width: 100%; font-family: inherit; font-size: 12.5px; font-weight: 700; padding: 9px; border-radius: 9px; border: none; cursor: pointer; color: #fff; background: linear-gradient(135deg,#3b82f6,#8b5cf6); transition: .2s; }
+  .ai-go:disabled { opacity: .5; cursor: not-allowed; }
+  .ai-ans { margin-top: 11px; font-size: 12.5px; line-height: 1.85; color: var(--text2); background: var(--bg3); border-radius: 9px; padding: 12px 13px; white-space: pre-wrap; display: none; }
+  .ai-ans.show { display: block; }
+  .ai-ans.err { color: #f87171; border: 1px solid rgba(248,113,113,.3); background: rgba(248,113,113,.07); }
+  .ai-meta { margin-top: 7px; font-size: 10.5px; color: var(--text3); }
+  .ai-spin { display: inline-block; animation: ai-pulse 1s ease-in-out infinite; }
+  @keyframes ai-pulse { 0%,100%{opacity:.35} 50%{opacity:1} }
 </style>
 </head>
 <body>
@@ -293,6 +309,18 @@
       <div class="lab-card">
         <div class="ctl-head"><span>实时指标</span></div>
         <div class="metric-grid" id="metric-grid"></div>
+      </div>
+      <div class="lab-card">
+        <div class="ctl-head"><span>AI 解读</span><span class="ai-badge">DeepSeek</span></div>
+        <textarea class="ai-q" id="ai-q" placeholder="就当前仿真实时数据提问，例如：为什么整群迟迟没能对齐？"></textarea>
+        <div class="ai-chips">
+          <button class="ai-chip" data-q="解读当前这组数据和参数，正在发生什么？">解读当前状态</button>
+          <button class="ai-chip" data-q="要让这个现象更明显，参数该怎么调？给具体方向和数值区间。">怎么调更明显</button>
+          <button class="ai-chip" data-q="这个仿真对应现实中的什么现象？机制上为什么相似？">现实意义</button>
+        </div>
+        <button class="ai-go" id="ai-go">解读当前仿真 →</button>
+        <div class="ai-ans" id="ai-ans"></div>
+        <div class="ai-meta" id="ai-meta">每次点击消耗一次 API 调用，不会自动请求</div>
       </div>
       <div class="lab-note" id="lab-note"></div>
     </aside>
@@ -1366,6 +1394,110 @@ QuietAir Pro · 轻量降噪耳机 · 定价299元 · 品牌零知名度
       loadSim(btn.dataset.sim);
       setRunning(true);
     });
+  });
+
+  /* ── AI 解读 ─────────────────────────────────────────────────────────────
+     只在用户点击时发起一次请求，绝不轮询/跟随帧循环。
+     后端: mirofish-api Worker (DeepSeek)，单次约 800 in / 500 out tokens。
+  ──────────────────────────────────────────────────────────────────────── */
+  var AI_END = 'https://api.mirofish.uichain.org/api/interpret';
+  var AI_NAME = {
+    boids: '鱼群涌现 Boids（分离/对齐/聚合三规则）',
+    herd:  '市场羊群效应（私有信号 + 邻居跟风 → 价格）',
+    rumor: '舆情扩散 SIR（网络传播，R₀ = β·k/γ）',
+  };
+  var aiQ   = document.getElementById('ai-q');
+  var aiGo  = document.getElementById('ai-go');
+  var aiAns = document.getElementById('ai-ans');
+  var aiMeta = document.getElementById('ai-meta');
+  var aiBusy = false;
+
+  document.querySelectorAll('.ai-chip').forEach(function (b) {
+    b.addEventListener('click', function () {
+      aiQ.value = b.dataset.q;
+      aiQ.focus();
+    });
+  });
+
+  function aiSnapshot() {
+    if (!model) return '';
+    var out = ['模型: ' + (AI_NAME[modelKey] || modelKey)];
+    try {
+      (model.metrics() || []).forEach(function (m) { out.push(m.k + ' = ' + m.v); });
+    } catch (e) { /* ignore */ }
+    var ps = model.params.map(function (p) { return p.label + '=' + params[p.k]; });
+    out.push('当前参数: ' + ps.join('，'));
+    return out.join('\n');
+  }
+
+  function aiRender(text, isErr, meta) {
+    aiAns.textContent = text;
+    aiAns.className = 'ai-ans show' + (isErr ? ' err' : '');
+    if (meta) aiMeta.textContent = meta;
+  }
+
+  function aiAsk() {
+    if (aiBusy) return;
+    var q = aiQ.value.trim();
+    if (!q) { aiQ.focus(); return; }
+
+    aiBusy = true;
+    aiGo.disabled = true;
+    aiGo.textContent = '解读中…';
+    aiRender('正在读取当前仿真状态并向 DeepSeek 提问…', false, '');
+
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 50000);
+
+    fetch(AI_END, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: q, snapshot: aiSnapshot(), scene: AI_NAME[modelKey] || modelKey }),
+      signal: ctrl.signal,
+    })
+      .then(function (r) {
+        clearTimeout(timer);
+        if (!r.ok && r.status !== 402) {
+          throw new Error('HTTP ' + r.status);
+        }
+        return r.json().then(function (j) { return { status: r.status, body: j }; });
+      })
+      .then(function (res) {
+        var j = res.body;
+        if (j.answer) {
+          var tk = j.usage;
+          aiRender(j.answer, false,
+            tk ? ('本次消耗 ' + tk.prompt_tokens + ' 输入 / ' + tk.completion_tokens + ' 输出 tokens')
+               : '请求完成');
+        } else if (res.status === 429) {
+          aiRender('提问太快了 —— Cloudflare 限流已拦截（每 IP 每 10 秒 5 次）。\n停 10 秒再试。', true, '');
+        } else if (res.status === 402 || j.error && String(j.error).indexOf('402') >= 0) {
+          aiRender('DeepSeek 账户余额不足。\n' + (j.detail || '去 platform.deepseek.com/topup 充值后即可恢复，无需重新部署。'), true, '');
+        } else {
+          aiRender((j.error || '未知错误') + (j.detail ? '\n' + j.detail : ''), true, '');
+        }
+      })
+      .catch(function (e) {
+        clearTimeout(timer);
+        var msg = e && e.name === 'AbortError'
+          ? '请求超时（50 秒）。可能是网络不稳定，重试一次即可。'
+          : (String(e).indexOf('Failed to fetch') >= 0
+              ? '连不上后端。' + (location.protocol === 'file:'
+                  ? '\n注意：你是用 file:// 直接打开的本地文件，浏览器会拦截跨域请求。请在终端运行 serve.py 后用 http://127.0.0.1:3000 打开。'
+                  : '\n检查 api.mirofish.uichain.org 是否可达。')
+              : String(e));
+        aiRender(msg, true, '');
+      })
+      .then(function () {
+        aiBusy = false;
+        aiGo.disabled = false;
+        aiGo.textContent = '解读当前仿真 →';
+      });
+  }
+
+  aiGo.addEventListener('click', aiAsk);
+  aiQ.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); aiAsk(); }
   });
 
   resize();
