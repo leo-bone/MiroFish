@@ -1,0 +1,13 @@
+# MiroFish API Worker
+# ⚠️ 必须与 custom domain 绑定的 Worker 名一致：api.mirofish.uichain.org
+name = "mirofish-api"
+main = "api/interpret.js"
+compatibility_date = "2024-01-01"
+account_id = "72450e08e207045ce0dc313447dcb5e3"
+
+[[routes]]
+pattern = "api.mirofish.uichain.org"
+custom_domain = true
+
+# 不要在这里写 [vars] 密钥！
+# 用：wrangler secret put DEEPSEEK_API_KEY
