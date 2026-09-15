@@ -190,6 +190,43 @@
     .main { padding: 0 16px 48px; }
     .topbar { padding: 12px 16px; }
   }
+
+  /* ── SIMULATION LAB ── */
+  .lab { max-width: 1400px; margin: 0 auto; padding: 0 32px 4px; }
+  .lab-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+  .lab-head h2 { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+  .lab-head p { font-size: 12.5px; color: var(--text3); margin-top: 5px; line-height: 1.6; }
+  .lab-badge { font-size: 11px; font-weight: 700; color: #10b981; background: rgba(16,185,129,.12); border: 1px solid rgba(16,185,129,.3); padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+  .lab-tabs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .lab-tab { padding: 9px 16px; border-radius: 9px; border: 1px solid var(--border); background: var(--bg2); color: var(--text2); font-size: 12.5px; font-weight: 600; cursor: pointer; transition: .2s; font-family: inherit; }
+  .lab-tab:hover { border-color: var(--accent); color: var(--text); }
+  .lab-tab.active { background: linear-gradient(135deg,#3b82f6,#8b5cf6); border-color: transparent; color: #fff; }
+  .lab-body { display: grid; grid-template-columns: 1fr 316px; gap: 16px; align-items: start; }
+  @media (max-width: 1000px) { .lab-body { grid-template-columns: 1fr; } }
+  .lab-stage { position: relative; background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  #sim-canvas { display: block; width: 100%; height: 460px; cursor: crosshair; }
+  @media (max-width: 1000px) { #sim-canvas { height: 340px; } }
+  .lab-hint { position: absolute; left: 12px; bottom: 10px; font-size: 11px; color: var(--text3); background: rgba(10,14,26,.75); padding: 3px 9px; border-radius: 6px; pointer-events: none; }
+  .lab-side { display: flex; flex-direction: column; gap: 14px; }
+  .lab-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+  .ctl-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 13px; }
+  .ctl-head > span { font-size: 11px; font-weight: 700; letter-spacing: .8px; color: var(--text3); text-transform: uppercase; }
+  .ctl-actions { display: flex; gap: 6px; }
+  .ctl-actions button { font-family: inherit; font-size: 11.5px; font-weight: 600; padding: 5px 11px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg3); color: var(--text2); cursor: pointer; transition: .15s; }
+  .ctl-actions button:hover { color: #fff; border-color: var(--accent); }
+  .ctl-actions button.on { background: var(--accent3); border-color: var(--accent3); color: #04120c; }
+  .slider-row { margin-bottom: 12px; }
+  .slider-row .sl-top { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text2); margin-bottom: 5px; }
+  .slider-row .sl-val { color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 600; }
+  .slider-row input[type=range] { width: 100%; height: 3px; -webkit-appearance: none; appearance: none; background: var(--border); border-radius: 3px; outline: none; }
+  .slider-row input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 13px; height: 13px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid var(--bg2); }
+  .slider-row input[type=range]::-moz-range-thumb { width: 13px; height: 13px; border: 2px solid var(--bg2); border-radius: 50%; background: var(--accent); cursor: pointer; }
+  .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .metric { background: var(--bg3); border-radius: 9px; padding: 9px 10px; }
+  .metric .mk { font-size: 10px; color: var(--text3); letter-spacing: .4px; }
+  .metric .mv { font-size: 15px; font-weight: 700; margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .lab-note { font-size: 11.5px; line-height: 1.7; color: var(--text3); background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 13px 14px; }
+  .lab-note b { color: var(--text2); }
 </style>
 </head>
 <body>
@@ -204,20 +241,61 @@
     </div>
   </div>
   <div class="nav-status">
-    <span class="status-badge badge-ready">● 种子已生成</span>
-    <span class="status-badge badge-ai">GraphRAG Ready</span>
+    <span class="status-badge badge-ready">● 仿真引擎在线</span>
+    <span class="status-badge badge-ai">零依赖 · 纯前端</span>
   </div>
 </div>
 
 <!-- HERO -->
 <div class="hero">
-  <h1>三场景<span>群体智能</span>仿真控制台</h1>
-  <p>已为金融市场、地缘政治推演、推广传播效果三大场景完成种子数据采集、本体配置与智能体 Prompt 定制</p>
+  <h1>群体智能<span>仿真实验室</span></h1>
+  <p>打开就能跑的三种群体行为模型 —— 鱼群涌现、市场羊群效应、舆情扩散。全部在你的浏览器里计算，参数随手改、结果立刻变，不花一分钱 API 费用。</p>
   <div class="hero-meta">
-    <div class="meta-item"><div class="meta-dot" style="background:#3b82f6"></div>金融市场仿真</div>
-    <div class="meta-item"><div class="meta-dot" style="background:#8b5cf6"></div>地缘政治推演</div>
-    <div class="meta-item"><div class="meta-dot" style="background:#10b981"></div>推广传播预测</div>
-    <div class="meta-item"><div class="meta-dot" style="background:#f59e0b"></div>生成时间：2026-03-29 17:24</div>
+    <div class="meta-item"><div class="meta-dot" style="background:#3b82f6"></div>鱼群涌现 Boids</div>
+    <div class="meta-item"><div class="meta-dot" style="background:#8b5cf6"></div>市场羊群效应</div>
+    <div class="meta-item"><div class="meta-dot" style="background:#10b981"></div>舆情扩散 SIR</div>
+    <div class="meta-item"><div class="meta-dot" style="background:#f59e0b"></div>零依赖 · 无需后端</div>
+  </div>
+</div>
+
+<!-- ===== LIVE SIMULATION LAB（真正可运行，纯前端零依赖） ===== -->
+<div class="lab">
+  <div class="lab-head">
+    <div>
+      <h2>🧪 实时仿真实验室</h2>
+      <p>不依赖任何后端与外部 API，模型跑在你自己的浏览器里 —— 拖参数、立刻看到群体行为的反应。</p>
+    </div>
+    <div class="lab-badge">● LIVE · 本地运算</div>
+  </div>
+
+  <div class="lab-tabs">
+    <button class="lab-tab active" data-sim="boids">🐟 鱼群涌现 Boids</button>
+    <button class="lab-tab" data-sim="herd">📈 市场羊群效应</button>
+    <button class="lab-tab" data-sim="rumor">📣 舆情扩散 SIR</button>
+  </div>
+
+  <div class="lab-body">
+    <div class="lab-stage">
+      <canvas id="sim-canvas"></canvas>
+      <div class="lab-hint" id="lab-hint">在画布上按住鼠标可吸引群体</div>
+    </div>
+    <aside class="lab-side">
+      <div class="lab-card">
+        <div class="ctl-head">
+          <span>参数</span>
+          <div class="ctl-actions">
+            <button id="btn-play" class="on">⏸ 暂停</button>
+            <button id="btn-reset">↻ 重置</button>
+          </div>
+        </div>
+        <div id="ctl-sliders"></div>
+      </div>
+      <div class="lab-card">
+        <div class="ctl-head"><span>实时指标</span></div>
+        <div class="metric-grid" id="metric-grid"></div>
+      </div>
+      <div class="lab-note" id="lab-note"></div>
+    </aside>
   </div>
 </div>
 
@@ -755,6 +833,546 @@ QuietAir Pro · 轻量降噪耳机 · 定价299元 · 品牌零知名度
   </div>
 
 </div>
+
+<script>
+/* ============================================================
+   MiroFish 仿真引擎 · 纯前端零依赖
+   三个模型共用接口：init / step / draw / metrics
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var canvas   = document.getElementById('sim-canvas');
+  var ctx      = canvas.getContext('2d');
+  var hintEl   = document.getElementById('lab-hint');
+  var sliderBox= document.getElementById('ctl-sliders');
+  var metricBox= document.getElementById('metric-grid');
+  var noteEl   = document.getElementById('lab-note');
+  var btnPlay  = document.getElementById('btn-play');
+  var btnReset = document.getElementById('btn-reset');
+
+  var W = 0, H = 0, DPR = 1;
+  var running = true, model = null, modelKey = 'boids';
+  var params = {};
+  var mouse = { x: 0, y: 0, active: false };
+  var TAU = Math.PI * 2;
+
+  var rand  = function (a, b) { return a + Math.random() * (b - a); };
+  var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+
+  /* ── 画布自适应 ── */
+  function resize() {
+    var r = canvas.getBoundingClientRect();
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = Math.max(320, Math.round(r.width));
+    H = Math.max(240, Math.round(r.height));
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    if (model && model.onResize) model.onResize(W, H);
+  }
+  window.addEventListener('resize', function () { resize(); });
+
+  /* ============================================================
+     模型一 · Boids 鱼群涌现
+     ============================================================ */
+  var boids = {
+    hint: '在画布上按住鼠标可吸引鱼群',
+    note: '<b>在做什么：</b>每只鱼只认视野半径内的邻居，按三条局部规则行动 —— <b>分离</b>（别撞上）、<b>对齐</b>（跟旁边同速）、<b>聚合</b>（往邻居中心靠）。<br><br><b>看什么：</b>没有任何一只鱼知道"整群"在哪，可三条规则叠起来，鱼群会自己长出方向感、能整片转弯。把「对齐权重」拉到 0，整群立刻散成各自乱游；只留分离，它们会互相躲成一团乱麻。<b>这就是涌现</b>：简单的局部规则，长出复杂的全局秩序。<br><br><b>试试：</b>把「视野半径」推到 110、「对齐权重」拉到 2，再按住画布拖动 —— 整群会拧成一股、跟着你的鼠标走。然后把「对齐权重」当场拉回 0，看它一秒散架。',
+    params: [
+      { k: 'n',    label: '鱼群数量',  min: 20,  max: 400, step: 10,   v: 200, dec: 0 },
+      { k: 'sep',  label: '分离权重',  min: 0,   max: 3,   step: 0.1,  v: 1.5, dec: 1 },
+      { k: 'ali',  label: '对齐权重',  min: 0,   max: 3,   step: 0.1,  v: 1.4, dec: 1 },
+      { k: 'coh',  label: '聚合权重',  min: 0,   max: 3,   step: 0.1,  v: 1.0, dec: 1 },
+      { k: 'view', label: '视野半径',  min: 20,  max: 140, step: 5,    v: 70,  dec: 0 },
+      { k: 'spd',  label: '游动速度',  min: 0.6, max: 4,   step: 0.1,  v: 2.2, dec: 1 }
+    ],
+    init: function () {
+      this.a = [];
+      for (var i = 0; i < params.n; i++) {
+        var ang = rand(0, TAU);
+        this.a.push({ x: rand(0, W), y: rand(0, H), ax: Math.cos(ang), ay: Math.sin(ang) });
+      }
+    },
+    onResize: function (w, h) {
+      if (this.a) this.a.forEach(function (p) { p.x = clamp(p.x, 4, w - 4); p.y = clamp(p.y, 4, h - 4); });
+    },
+    step: function () {
+      var n = this.a.length, R = params.view, R2 = R * R, Rsep = (R * 0.38) * (R * 0.38);
+      var sep = params.sep, ali = params.ali, coh = params.coh;
+      for (var i = 0; i < n; i++) {
+        var p = this.a[i];
+        var cx = 0, cy = 0, vx = 0, vy = 0, sx = 0, sy = 0, cnt = 0, scnt = 0;
+        for (var j = 0; j < n; j++) {
+          if (i === j) continue;
+          var q = this.a[j], dx = q.x - p.x, dy = q.y - p.y, d2 = dx * dx + dy * dy;
+          if (d2 > R2 || d2 === 0) continue;
+          cnt++; cx += q.x; cy += q.y; vx += q.ax; vy += q.ay;
+          if (d2 < Rsep) { scnt++; sx -= dx / d2; sy -= dy / d2; }
+        }
+        var ax = p.ax, ay = p.ay;
+        if (cnt) {
+          ax += (cx / cnt - p.x) * 0.0016 * coh + (vx / cnt - p.ax) * 0.05 * ali;
+          ay += (cy / cnt - p.y) * 0.0016 * coh + (vy / cnt - p.ay) * 0.05 * ali;
+        }
+        if (scnt) { ax += sx * 30 * sep; ay += sy * 30 * sep; }
+        if (mouse.active) {
+          var mdx = mouse.x - p.x, mdy = mouse.y - p.y, md = Math.hypot(mdx, mdy) || 1;
+          if (md < 280) { var f = 0.07 * (1 - md / 280); ax += (mdx / md) * f; ay += (mdy / md) * f; }
+        }
+        var m = 70;
+        if (p.x < m) ax += (m - p.x) * 0.0022; else if (p.x > W - m) ax -= (p.x - (W - m)) * 0.0022;
+        if (p.y < m) ay += (m - p.y) * 0.0022; else if (p.y > H - m) ay -= (p.y - (H - m)) * 0.0022;
+        p.ax = ax; p.ay = ay;
+      }
+      var s = params.spd;
+      for (var k = 0; k < n; k++) {
+        var f2 = this.a[k], d = Math.hypot(f2.ax, f2.ay) || 1;
+        f2.ax /= d; f2.ay /= d;
+        f2.x += f2.ax * s; f2.y += f2.ay * s;
+      }
+    },
+    draw: function () {
+      ctx.fillStyle = 'rgba(10,14,26,0.3)';
+      ctx.fillRect(0, 0, W, H);
+      ctx.lineCap = 'round';
+      for (var i = 0; i < this.a.length; i++) {
+        var p = this.a[i];
+        var t = clamp(((p.ax + 1) + (p.ay + 1)) / 4, 0, 1);
+        var col = 'hsl(' + (205 + t * 60) + ',88%,' + (53 + t * 13) + '%)';
+        ctx.strokeStyle = col; ctx.lineWidth = 1.9;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x - p.ax * 5.5, p.y - p.ay * 5.5);
+        ctx.stroke();
+      }
+    },
+    metrics: function () {
+      var n = this.a.length, vx = 0, vy = 0, cxm = 0, cym = 0, dsum = 0, i;
+      for (i = 0; i < n; i++) {
+        var p = this.a[i];
+        vx += p.ax; vy += p.ay; cxm += p.x; cym += p.y;
+      }
+      cxm /= n; cym /= n;
+      for (i = 0; i < n; i++) dsum += Math.hypot(this.a[i].x - cxm, this.a[i].y - cym);
+      var R2 = params.view * params.view, sample = Math.min(n, 60), linkSum = 0;
+      for (var s = 0; s < sample; s++) {
+        var a0 = this.a[Math.floor(s * n / sample)], c = 0;
+        for (var j = 0; j < n; j++) {
+          if (a0 === this.a[j]) continue;
+          var dx = a0.x - this.a[j].x, dy = a0.y - this.a[j].y;
+          if (dx * dx + dy * dy < R2) c++;
+        }
+        linkSum += c;
+      }
+      var polar = Math.hypot(vx / n, vy / n);
+      return [
+        { k: '群体极化度', v: (polar * 100).toFixed(1) + '%' },
+        { k: '平均邻居数', v: (linkSum / sample).toFixed(1) },
+        { k: '群体半径',   v: (dsum / n).toFixed(0) + ' px' },
+        { k: '个体数',     v: String(n) }
+      ];
+    }
+  };
+
+  /* ============================================================
+     模型二 · 市场羊群效应
+     ============================================================ */
+  var herd = {
+    hint: '点击画布施加外部冲击（价格瞬间跳变）',
+    note: '<b>在做什么：</b>每个投资者有自己的私有判断（私有信号），但同时会偷看邻居的仓位。<b>从众强度</b>决定他多大程度放弃自己的判断去跟风，<b>基本面锚定</b>决定他多大程度回归价值。价格由全部仓位的净需求推动。<br><br><b>看什么：</b>把「从众强度」推高到 0.6 以上、「基本面锚定」压到接近 0 —— 系统会自己长出<b>泡沫和崩盘</b>：价格冲上云端脱离基本面，然后一次小冲击引发踩踏。这不是你写死的剧本，是跟风行为自己放大出来的。再把锚定调回 0.05，市场立刻变得理性、贴着基本面走。<br><br><b>试试：</b>先把从众拉到 0.8，跑一会儿，然后点一下画布 —— 看清一次"外部冲击"是怎样被羊群放大成崩盘的。',
+    params: [
+      { k: 'n',     label: '投资者数量',   min: 30,  max: 200, step: 10,    v: 100,  dec: 0 },
+      { k: 'h',     label: '从众强度',     min: 0,   max: 1,   step: 0.02,  v: 0.30, dec: 2 },
+      { k: 'a',     label: '基本面锚定',   min: 0,   max: 0.3, step: 0.005, v: 0.035, dec: 3 },
+      { k: 'noise', label: '噪声交易',     min: 0,   max: 0.1, step: 0.002, v: 0.02, dec: 3 },
+      { k: 'kappa', label: '价格冲击系数', min: 0.02, max: 0.8, step: 0.01, v: 0.22, dec: 2 }
+    ],
+    init: function () {
+      var n = params.n, i;
+      this.inv = [];
+      for (i = 0; i < n; i++) {
+        this.inv.push({ sig: rand(-0.75, 0.75), pos: rand(-0.25, 0.25), nb: [] });
+      }
+      var K = 5;
+      for (i = 0; i < n; i++) {
+        var s = {}, list = [];
+        while (list.length < Math.min(K, n - 1)) {
+          var j = Math.floor(Math.random() * n);
+          if (j !== i && !s[j]) { s[j] = 1; list.push(j); }
+        }
+        this.inv[i].nb = list;
+      }
+      this.P = 100; this.F = 100; this.t = 0; this.hist = [100];
+      this.shockFlash = 0;
+    },
+    onResize: function () {},
+    step: function () {
+      var n = this.inv.length, h = params.h, a = params.a, noise = params.noise;
+      var sum = 0, i, j;
+      for (i = 0; i < n; i++) {
+        var me = this.inv[i], nbAvg = 0, nb = me.nb;
+        for (j = 0; j < nb.length; j++) nbAvg += this.inv[nb[j]].pos;
+        nbAvg /= (nb.length || 1);
+        var gap = (this.F - this.P) / this.F;
+        var target = clamp(me.sig + gap * 2.2, -1, 1);
+        me.pos += h * (nbAvg - me.pos) + a * (target - me.pos) + rand(-noise, noise);
+        me.pos = clamp(me.pos, -1, 1);
+        sum += me.pos;
+      }
+      this.P *= (1 + params.kappa * (sum / n) * 0.12);
+      this.P = Math.max(5, Math.min(1000, this.P));
+      this.t++;
+      this.hist.push(this.P);
+      if (this.hist.length > 1200) this.hist.shift();
+      if (this.shockFlash > 0) this.shockFlash--;
+    },
+    shock: function () {
+      this.P *= 0.93;
+      this.hist.push(this.P);
+      this.shockFlash = 24;
+    },
+    draw: function () {
+      ctx.fillStyle = '#0c1322'; ctx.fillRect(0, 0, W, H);
+      var pad = 22, topH = H * 0.52, plotW = W - pad * 2;
+      var lo = Math.min.apply(null, this.hist), hi = Math.max.apply(null, this.hist);
+      if (hi - lo < 1) { hi = lo + 1; }
+      var pad2 = (hi - lo) * 0.12; lo -= pad2; hi += pad2;
+
+      // 基本面基准线
+      var fy = pad + topH - pad * 2 - ((this.F - lo) / (hi - lo)) * (topH - pad * 2);
+      ctx.setLineDash([5, 5]); ctx.strokeStyle = 'rgba(148,163,184,0.4)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(pad, fy); ctx.lineTo(W - pad, fy); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(148,163,184,0.65)'; ctx.font = '10px ui-monospace, monospace';
+      ctx.fillText('基本面 100', pad + 4, fy - 5);
+
+      // 价格曲线
+      var hl = this.hist.length, x0 = W - pad - plotW, y0 = pad + topH - pad * 2;
+      ctx.beginPath();
+      for (var i = 0; i < hl; i++) {
+        var x = x0 + (i / Math.max(1, hl - 1)) * plotW;
+        var y = y0 - ((this.hist[i] - lo) / (hi - lo)) * (topH - pad * 2);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      var up = this.hist[hl - 1] >= this.hist[Math.max(0, hl - 2)];
+      ctx.strokeStyle = up ? '#ef4444' : '#10b981';
+      ctx.lineWidth = 2; ctx.stroke();
+
+      ctx.fillStyle = '#e2e8f0'; ctx.font = '600 13px ui-monospace, monospace';
+      ctx.fillText(this.P.toFixed(2), pad + 4, pad + 4);
+      ctx.fillStyle = this.shockFlash > 0 ? '#f59e0b' : 'rgba(148,163,184,0.5)';
+      ctx.font = '11px ui-monospace, monospace';
+      ctx.fillText(this.shockFlash > 0 ? '⚡ 外部冲击' : 't = ' + this.t, pad + 4, pad + 20);
+
+      // 投资者仓位矩阵
+      var n = this.inv.length, cols = Math.ceil(Math.sqrt(n * (W / (H * 0.42))));
+      cols = Math.max(6, Math.min(cols, 26));
+      var rows = Math.ceil(n / cols);
+      var gw = (W - pad * 2) / cols, gh = (H * 0.42 - pad) / rows;
+      var r0 = H * 0.52 + 8;
+      for (var k = 0; k < n; k++) {
+        var px = pad + (k % cols) * gw + gw / 2;
+        var py = r0 + Math.floor(k / cols) * gh + gh / 2;
+        var v = this.inv[k].pos, rr = Math.max(1.6, Math.min(gw, gh) * 0.32);
+        if (v > 0.02) ctx.fillStyle = 'rgba(239,68,68,' + (0.28 + Math.abs(v) * 0.72) + ')';
+        else if (v < -0.02) ctx.fillStyle = 'rgba(16,185,129,' + (0.28 + Math.abs(v) * 0.72) + ')';
+        else ctx.fillStyle = 'rgba(100,116,139,0.5)';
+        ctx.beginPath(); ctx.arc(px, py, rr, 0, TAU); ctx.fill();
+      }
+      ctx.fillStyle = 'rgba(148,163,184,0.55)'; ctx.font = '10px ui-monospace, monospace';
+      ctx.fillText('每个点 = 一个投资者（红=多头 / 绿=空头）', pad, H - 8);
+    },
+    metrics: function () {
+      var n = this.inv.length, sum = 0, longs = 0, i;
+      for (i = 0; i < n; i++) { sum += this.inv[i].pos; if (this.inv[i].pos > 0.05) longs++; }
+      var mean = sum / n, vsum = 0;
+      for (i = 0; i < n; i++) { var d = this.inv[i].pos - mean; vsum += d * d; }
+      var sd = Math.sqrt(vsum / n);
+      var dev = (this.P - this.F) / this.F * 100;
+      var hist = this.hist, m = Math.min(60, hist.length - 1), ret = [];
+      for (i = hist.length - m; i < hist.length; i++) if (i > 0) ret.push(Math.log(hist[i] / hist[i - 1]));
+      var mu = ret.reduce(function (s2, x) { return s2 + x; }, 0) / Math.max(1, ret.length);
+      var vs = ret.reduce(function (s2, x) { return s2 + (x - mu) * (x - mu); }, 0) / Math.max(1, ret.length);
+      return [
+        { k: '当前价格',   v: this.P.toFixed(2) },
+        { k: '偏离基本面', v: (dev >= 0 ? '+' : '') + dev.toFixed(1) + '%' },
+        { k: '羊群指数',   v: Math.round((1 - Math.min(1, sd)) * 100) + '%' },
+        { k: '多头占比',   v: Math.round(longs / n * 100) + '%' },
+        { k: '波动率',     v: (Math.sqrt(vs) * 100).toFixed(2) + '%' },
+        { k: '已运行',     v: this.t + ' 步' }
+      ];
+    }
+  };
+
+  /* ============================================================
+     模型三 · 舆情扩散（网络 SIR）
+     ============================================================ */
+  var rumor = {
+    hint: '点击画布可植入新的谣言种子',
+    note: '<b>在做什么：</b>把人放进一张社交网络里，每个节点三种状态 —— <b>未听说 S</b>、<b>正在传播 I</b>、<b>已失去兴趣 R</b>。传播中的节点每步以 β 的概率感染邻居，同时以 γ 的概率"腻了"停下。这就是经典的 SIR 模型，只不过跑道是网络而不是均匀人群。<br><br><b>看什么：</b><b>R₀ = β·k / γ</b>（k 是平均连接度）是分水岭 —— R₀ &lt; 1 时谣言自己熄灭，R₀ &gt; 1 时会爆发并席卷全网。把「传播率」从 0.10 慢慢推到 0.25，你会亲眼看到曲线从"冒个泡就没了"变成"指数级爆发"。<br><br><b>试试：</b>把连接度调到 8、传播率 0.3、遗忘率 0.05 —— 再看曲线爬升有多陡。然后大幅提高遗忘率，看它怎么被摁下去。',
+    params: [
+      { k: 'n',     label: '网络节点数', min: 40,  max: 300, step: 10,   v: 150,  dec: 0 },
+      { k: 'k',     label: '平均连接度', min: 2,   max: 10,  step: 1,    v: 4,    dec: 0 },
+      { k: 'beta',  label: '传播率 β',   min: 0.01, max: 0.5, step: 0.01, v: 0.06, dec: 2 },
+      { k: 'gamma', label: '遗忘率 γ',   min: 0.01, max: 0.3, step: 0.01, v: 0.06, dec: 2 },
+      { k: 'seed',  label: '初始种子数', min: 1,   max: 20,  step: 1,    v: 3,    dec: 0 }
+    ],
+    init: function () {
+      var n = params.n, i, j;
+      this.nodes = [];
+      for (i = 0; i < n; i++) {
+        var ang = rand(0, TAU), r = Math.sqrt(Math.random()) * Math.min(W, H) * 0.40;
+        this.nodes.push({ x: W / 2 + Math.cos(ang) * r, y: H / 2 + Math.sin(ang) * r, st: 'S', nb: [], ph: rand(0, TAU) });
+      }
+      this.links = [];
+      var K = params.k;
+      for (i = 0; i < n; i++) {
+        var s = {};
+        while (Object.keys(s).length < Math.min(K, n - 1)) {
+          var t = Math.floor(Math.random() * n);
+          if (t !== i) s[t] = 1;
+        }
+        for (var key in s) {
+          var jj = +key;
+          if (this.nodes[i].nb.indexOf(jj) < 0) { this.nodes[i].nb.push(jj); this.links.push([i, jj]); }
+          if (this.nodes[jj].nb.indexOf(i) < 0) this.nodes[jj].nb.push(i);
+        }
+      }
+      for (i = 0; i < params.seed && i < n; i++) this.nodes[Math.floor(Math.random() * n)].st = 'I';
+      this.t = 0; this.peak = 0; this.hist = [];
+      this.ever = 0;
+    },
+    onResize: function (w, h) {
+      if (!this.nodes) return;
+      this.nodes.forEach(function (nd) {
+        var dx = nd.x - w / 2, dy = nd.y - h / 2, d = Math.hypot(dx, dy) || 1;
+        var lim = Math.min(w, h) * 0.42;
+        if (d > lim) { nd.x = w / 2 + dx / d * lim; nd.y = h / 2 + dy / d * lim; }
+      });
+    },
+    infect: function (idx) { if (this.nodes[idx] && this.nodes[idx].st === 'S') this.nodes[idx].st = 'I'; },
+    step: function () {
+      var beta = params.beta, gamma = params.gamma, toInfect = [], i;
+      for (i = 0; i < this.nodes.length; i++) {
+        var nd = this.nodes[i];
+        if (nd.st !== 'I') continue;
+        for (var j = 0; j < nd.nb.length; j++) {
+          var tgt = this.nodes[nd.nb[j]];
+          if (tgt.st === 'S' && Math.random() < beta) toInfect.push(nd.nb[j]);
+        }
+        if (Math.random() < gamma) nd.st = 'R';
+      }
+      for (i = 0; i < toInfect.length; i++) this.nodes[toInfect[i]].st = 'I';
+      this.t++;
+      var c = this.cur();
+      this.hist.push(c);
+      if (this.hist.length > 1200) this.hist.shift();
+      if (c > this.peak) this.peak = c;
+    },
+    cur: function () {
+      var c = 0;
+      for (var i = 0; i < this.nodes.length; i++) if (this.nodes[i].st === 'I') c++;
+      return c;
+    },
+    // 传播归零即自动停表，免得用户切个标签回来发现"已经结束了"
+    done: function () { return this.t > 6 && this.cur() === 0; },
+    touched: function () {
+      var c = 0;
+      for (var i = 0; i < this.nodes.length; i++) if (this.nodes[i].st !== 'S') c++;
+      return c;
+    },
+    draw: function () {
+      ctx.fillStyle = '#0c1322'; ctx.fillRect(0, 0, W, H);
+      var i;
+      // 边
+      ctx.strokeStyle = 'rgba(59,130,246,0.13)'; ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (i = 0; i < this.links.length; i++) {
+        var a = this.nodes[this.links[i][0]], b = this.nodes[this.links[i][1]];
+        ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+      }
+      ctx.stroke();
+      // 节点
+      var pulse = 1 + Math.sin(this.t * 0.25) * 0.18;
+      for (i = 0; i < this.nodes.length; i++) {
+        var nd = this.nodes[i], r = 3.4;
+        if (nd.st === 'I') {
+          var glow = ctx.createRadialGradient(nd.x, nd.y, 0, nd.x, nd.y, 15 * pulse);
+          glow.addColorStop(0, 'rgba(245,158,11,0.55)');
+          glow.addColorStop(1, 'rgba(245,158,11,0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath(); ctx.arc(nd.x, nd.y, 15 * pulse, 0, TAU); ctx.fill();
+          ctx.fillStyle = '#f59e0b'; r = 4.6 * pulse;
+        } else if (nd.st === 'R') {
+          ctx.fillStyle = 'rgba(59,130,246,0.85)';
+        } else {
+          ctx.fillStyle = 'rgba(100,116,139,0.62)';
+        }
+        ctx.beginPath(); ctx.arc(nd.x, nd.y, r, 0, TAU); ctx.fill();
+      }
+      // 感染曲线小图
+      var hw = Math.min(260, W * 0.34), hh = 72, hx = W - hw - 16, hy = 16;
+      ctx.fillStyle = 'rgba(10,14,26,0.8)';
+      ctx.fillRect(hx, hy, hw, hh);
+      ctx.strokeStyle = 'rgba(30,45,69,1)'; ctx.lineWidth = 1;
+      ctx.strokeRect(hx, hy, hw, hh);
+      var maxV = Math.max(1, this.peak), hl = this.hist.length;
+      ctx.beginPath();
+      for (i = 0; i < hl; i++) {
+        var x = hx + (i / Math.max(1, hl - 1)) * hw;
+        var y = hy + hh - (this.hist[i] / maxV) * (hh - 8) - 4;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 1.6; ctx.stroke();
+      ctx.fillStyle = 'rgba(148,163,184,0.8)'; ctx.font = '10px ui-monospace, monospace';
+      ctx.fillText('感染人数曲线', hx + 6, hy + 13);
+      // 图例
+      ctx.font = '10px ui-monospace, monospace';
+      ctx.fillStyle = 'rgba(100,116,139,0.85)'; ctx.beginPath(); ctx.arc(20, H - 18, 3.4, 0, TAU); ctx.fill();
+      ctx.fillStyle = 'rgba(148,163,184,0.8)'; ctx.fillText('未听说', 30, H - 14);
+      ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(84, H - 18, 3.4, 0, TAU); ctx.fill();
+      ctx.fillStyle = 'rgba(148,163,184,0.8)'; ctx.fillText('传播中', 94, H - 14);
+      ctx.fillStyle = 'rgba(59,130,246,0.85)'; ctx.beginPath(); ctx.arc(148, H - 18, 3.4, 0, TAU); ctx.fill();
+      ctx.fillStyle = 'rgba(148,163,184,0.8)'; ctx.fillText('已平息', 158, H - 14);
+    },
+    metrics: function () {
+      var n = this.nodes.length, i = this.cur(), r0 = params.beta * params.k / Math.max(0.001, params.gamma);
+      return [
+        { k: 'R₀ 基本再生数', v: r0.toFixed(2) },
+        { k: '当前传播人数',  v: i + ' / ' + n },
+        { k: '累计触达',      v: Math.round(this.touched() / n * 100) + '%' },
+        { k: '传播峰值',      v: String(this.peak) },
+        { k: '已运行',        v: this.t + ' 步' },
+        { k: '状态',          v: i === 0 ? '已平息' : (this.touched() >= n ? '饱和' : '扩散中') }
+      ];
+    }
+  };
+
+  var MODELS = { boids: boids, herd: herd, rumor: rumor };
+
+  /* ── 控件构建 ── */
+  function buildControls(spec) {
+    sliderBox.innerHTML = '';
+    spec.params.forEach(function (p) {
+      var row = document.createElement('div');
+      row.className = 'slider-row';
+      row.innerHTML = '<div class="sl-top"><span>' + p.label + '</span><span class="sl-val">' +
+        (+p.v).toFixed(p.dec) + '</span></div>' +
+        '<input type="range" min="' + p.min + '" max="' + p.max + '" step="' + p.step + '" value="' + p.v + '">';
+      sliderBox.appendChild(row);
+      var input = row.querySelector('input'), out = row.querySelector('.sl-val');
+      input.addEventListener('input', function () {
+        var val = parseFloat(input.value);
+        params[p.k] = val;
+        out.textContent = val.toFixed(p.dec);
+        if (p.k === 'n' || p.k === 'k' || p.k === 'seed') model.init();
+      });
+    });
+  }
+
+  var metricEls = null;
+  function buildMetrics(list) {
+    metricBox.innerHTML = '';
+    metricEls = list.map(function (m) {
+      var d = document.createElement('div');
+      d.className = 'metric';
+      d.innerHTML = '<div class="mk">' + m.k + '</div><div class="mv">—</div>';
+      metricBox.appendChild(d);
+      return d.querySelector('.mv');
+    });
+  }
+  function renderMetrics(list) {
+    if (!metricEls || metricEls.length !== list.length) { buildMetrics(list); return; }
+    for (var i = 0; i < list.length; i++) metricEls[i].textContent = list[i].v;
+  }
+
+  /* ── 加载模型 ── */
+  function loadSim(key) {
+    modelKey = key;
+    model = MODELS[key];
+    params = {};
+    model.params.forEach(function (p) { params[p.k] = p.v; });
+    buildControls(model);
+    resize();
+    model.init();
+    hintEl.textContent = model.hint;
+    noteEl.innerHTML = model.note;
+    buildMetrics(model.metrics());
+    model.draw();
+  }
+
+  /* ── 主循环 ── */
+  var lastT = performance.now(), frame = 0;
+  function loop(now) {
+    requestAnimationFrame(loop);
+    var dt = Math.min(80, now - lastT); lastT = now;
+    if (!model) return;
+    if (running) {
+      var steps = dt > 30 ? 2 : 1;
+      for (var s = 0; s < steps; s++) model.step();
+      model.draw();
+      if ((frame++ % 5) === 0) renderMetrics(model.metrics());
+      if (model.done && model.done()) setRunning(false);
+    }
+  }
+
+  function setRunning(v) {
+    running = v;
+    btnPlay.textContent = v ? '⏸ 暂停' : '▶ 运行';
+    btnPlay.classList.toggle('on', v);
+  }
+
+  /* ── 交互 ── */
+  function canvasPos(e) {
+    var r = canvas.getBoundingClientRect();
+    var cx = e.touches ? e.touches[0].clientX : e.clientX;
+    var cy = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: cx - r.left, y: cy - r.top };
+  }
+  canvas.addEventListener('mousemove', function (e) {
+    var p = canvasPos(e); mouse.x = p.x; mouse.y = p.y; mouse.active = true;
+  });
+  canvas.addEventListener('mouseleave', function () { mouse.active = false; });
+  canvas.addEventListener('touchmove', function (e) {
+    var p = canvasPos(e); mouse.x = p.x; mouse.y = p.y; mouse.active = true; e.preventDefault();
+  }, { passive: false });
+  canvas.addEventListener('touchend', function () { mouse.active = false; });
+
+  canvas.addEventListener('click', function (e) {
+    var p = canvasPos(e);
+    if (modelKey === 'herd' && model.shock) {
+      model.shock();
+    } else if (modelKey === 'rumor') {
+      // 找最近的节点植入种子
+      var best = -1, bd = Infinity;
+      for (var i = 0; i < model.nodes.length; i++) {
+        var d = Math.hypot(model.nodes[i].x - p.x, model.nodes[i].y - p.y);
+        if (d < bd) { bd = d; best = i; }
+      }
+      if (best >= 0) model.infect(best);
+    }
+  });
+
+  btnPlay.addEventListener('click', function () {
+    setRunning(!running);
+    if (running) { lastT = performance.now(); model.draw(); }
+  });
+  btnReset.addEventListener('click', function () { loadSim(modelKey); setRunning(true); });
+
+  document.querySelectorAll('.lab-tab').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.lab-tab').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      loadSim(btn.dataset.sim);
+      setRunning(true);
+    });
+  });
+
+  resize();
+  loadSim('boids');
+  requestAnimationFrame(loop);
+})();
+</script>
 
 <script>
 function switchTab(scene) {
